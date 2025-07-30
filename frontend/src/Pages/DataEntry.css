@@ -1,0 +1,109 @@
+.data-page {
+  padding: 2rem;
+}
+
+.data-page h2 {
+  color: #5e2ca5;
+}
+
+.form-panels {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  margin-top: 1.5rem;
+}
+
+.manual-form,
+.upload-box {
+  flex: 1;
+  min-width: 350px;
+  background: white;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.manual-form input,
+.manual-form select,
+.manual-form textarea {
+  width: 100%;
+  padding: 0.7rem;
+  margin: 0.5rem 0;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
+
+.manual-form .row {
+  display: flex;
+  gap: 1rem;
+}
+
+.identity-group {
+  margin-top: 1rem;
+}
+
+.checkboxes {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.3rem;
+}
+
+.manual-form button {
+  background: #7c3aed;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 0.8rem;
+  margin-top: 1rem;
+  cursor: pointer;
+}
+
+.upload-box .csv-dropzone {
+  margin: 1rem 0;
+  padding: 2rem;
+  border: 2px dashed #bbb;
+  border-radius: 8px;
+  text-align: center;
+  color: #555;
+  background: #fafafa;
+  cursor: pointer;
+}
+
+.csv-guidelines {
+  margin-top: 1rem;
+  font-size: 0.9rem;
+}
+
+.csv-guidelines ul {
+  margin-top: 0.3rem;
+  padding-left: 1.2rem;
+}
+
+.download-btn {
+  margin-top: 0.5rem;
+  background: #f3f4f6;
+  padding: 0.6rem 1rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.progress-stats {
+  margin-top: 2rem;
+  display: flex;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+.card {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+  flex: 1;
+  min-width: 320px;
+}
+
+.card.recent ul {
+  padding-left: 1.2rem;
+}

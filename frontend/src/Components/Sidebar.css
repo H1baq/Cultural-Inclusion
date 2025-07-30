@@ -46,3 +46,9 @@
   border-radius: 12px;
   font-size: 0.8rem;
 }
+.sidebar li a {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+  width: 100%;
+}
