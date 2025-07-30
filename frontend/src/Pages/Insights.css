@@ -1,0 +1,95 @@
+.insights-container {
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  font-family: Arial, sans-serif;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header h1 {
+  font-size: 1.8rem;
+  margin: 0;
+}
+
+.header p {
+  color: #666;
+  margin: 0.25rem 0;
+}
+
+.chart-card {
+  background: white;
+  border-radius: 8px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.06);
+}
+
+.chart-card h2 {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.2rem;
+}
+
+.chart-card p {
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.grid-two {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+}
+
+.region-list {
+  margin-top: 1rem;
+  list-style: none;
+  padding: 0;
+  font-size: 0.9rem;
+}
+
+.recommendations {
+  background: #f9fafb;
+  border-radius: 8px;
+  padding: 1.5rem;
+}
+
+.recommendations h2 {
+  margin-bottom: 1rem;
+}
+
+.recommendation-card {
+  background: white;
+  border: 1px solid #eee;
+  padding: 1rem;
+  border-radius: 6px;
+  margin-bottom: 1rem;
+}
+
+.recommendation-card .tag {
+  display: inline-block;
+  margin-top: 0.5rem;
+  margin-right: 0.5rem;
+  padding: 0.3rem 0.6rem;
+  font-size: 0.75rem;
+  border-radius: 999px;
+}
+
+.tag.high {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+.tag.medium {
+  background: #fef9c3;
+  color: #b45309;
+}
+
+.tag.low {
+  background: #d1fae5;
+  color: #065f46;
+}
