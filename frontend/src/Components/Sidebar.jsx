@@ -26,6 +26,7 @@ const Sidebar = ({ currentPage, setCurrentPage, user }) => {
       case 'beneficiary':
         return [
           { id: 'profile', label: 'My Profile', icon: '👤' },
+          { id: 'data-entry', label: 'Data Entry', icon: '📝' },
           { id: 'status', label: 'Application Status', icon: '📊' },
           { id: 'support', label: 'Support Programs', icon: '🤝' }
         ]
@@ -89,17 +90,20 @@ const Sidebar = ({ currentPage, setCurrentPage, user }) => {
 
       <div className="sidebar-footer">
         <div className="role-info">
-          <h4>Role Information</h4>
-          <p>You are logged in as a <strong>{user?.role?.charAt(0).toUpperCase() + user?.role?.slice(1)}</strong></p>
-          {user?.role === 'admin' && (
-            <p>Full system access and management capabilities</p>
-          )}
-          {user?.role === 'officer' && (
-            <p>Data entry and beneficiary management</p>
-          )}
-          {user?.role === 'beneficiary' && (
-            <p>Profile management and support access</p>
-          )}
+          <div className="role-icon">{getRoleIcon(user?.role)}</div>
+          <div className="role-text">
+            <p>Role Information</p>
+            <strong>You are logged in as a {user?.role?.charAt(0).toUpperCase() + user?.role?.slice(1)}</strong>
+            {user?.role === 'admin' && (
+              <div className="role-description">Full system access and management capabilities</div>
+            )}
+            {user?.role === 'officer' && (
+              <div className="role-description">Data entry and beneficiary management</div>
+            )}
+            {user?.role === 'beneficiary' && (
+              <div className="role-description">Profile management and support access</div>
+            )}
+          </div>
         </div>
       </div>
     </div>

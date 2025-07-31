@@ -131,8 +131,8 @@
 
 .role-info {
   display: flex;
-  align-items: center;
-  gap: 0.75rem;
+  flex-direction: column;
+  gap: 0.5rem;
   padding: 1rem;
   background: rgba(255, 255, 255, 0.05);
   border-radius: 10px;
@@ -142,19 +142,35 @@
 .role-icon {
   font-size: 1.5rem;
   opacity: 0.8;
+  text-align: center;
+}
+
+.role-text {
+  text-align: left;
 }
 
 .role-text p {
   margin: 0;
-  font-size: 0.8rem;
+  font-size: 0.75rem;
   opacity: 0.7;
   text-transform: uppercase;
   letter-spacing: 0.5px;
+  font-weight: 600;
+  margin-bottom: 0.25rem;
 }
 
 .role-text strong {
   display: block;
-  font-size: 0.9rem;
+  font-size: 0.85rem;
+  margin-bottom: 0.25rem;
+  font-weight: 600;
+  color: #fff;
+}
+
+.role-text .role-description {
+  font-size: 0.7rem;
+  opacity: 0.6;
+  line-height: 1.3;
   margin-top: 0.25rem;
 }
 

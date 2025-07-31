@@ -12,6 +12,8 @@ import Login from './Pages/Login'
 import Navbar from './Components/Navbar'
 import Sidebar from './Components/Sidebar'
 import './App.css'
+import ApplicationStatus from './Pages/ApplicationStatus'
+import SupportPrograms from './Pages/SupportPrograms'
 
 const App = () => {
   const [currentPage, setCurrentPage] = useState('dashboard')
@@ -36,18 +38,34 @@ const App = () => {
     window.addEventListener('resize', checkMobile)
     
     if (savedToken && savedUser) {
-      const userData = JSON.parse(savedUser)
-      setToken(savedToken)
-      setUser(userData)
-      setIsAuthenticated(true)
-      
-      // Set appropriate default page based on role
-      if (userData.role === 'admin') {
-        setCurrentPage('admin-dashboard')
-      } else if (userData.role === 'beneficiary') {
-        setCurrentPage('profile')
-      } else {
-        setCurrentPage('dashboard')
+      try {
+        const userData = JSON.parse(savedUser)
+        
+        // Validate user role - only accept new role system
+        const validRoles = ['admin', 'officer', 'beneficiary']
+        if (!validRoles.includes(userData.role)) {
+          console.log('🔄 Invalid role detected, clearing cached data...')
+          localStorage.removeItem('token')
+          localStorage.removeItem('user')
+          return
+        }
+        
+        setToken(savedToken)
+        setUser(userData)
+        setIsAuthenticated(true)
+        
+        // Set appropriate default page based on role
+        if (userData.role === 'admin') {
+          setCurrentPage('admin-dashboard')
+        } else if (userData.role === 'beneficiary') {
+          setCurrentPage('profile')
+        } else {
+          setCurrentPage('dashboard')
+        }
+      } catch (error) {
+        console.error('❌ Error parsing cached user data:', error)
+        localStorage.removeItem('token')
+        localStorage.removeItem('user')
       }
     }
     
@@ -115,6 +133,8 @@ const App = () => {
       case 'data-entry':
         if (userRole === 'admin' || userRole === 'officer') {
           return <DataEntry user={user} />
+        } else if (userRole === 'beneficiary') {
+          return <DataEntry user={user} />
         }
         return <div className="access-denied">Access Denied - Officers and Admins only</div>
         
@@ -144,14 +164,16 @@ const App = () => {
         return <div className="access-denied">Access Denied - Beneficiaries only</div>
         
       case 'status':
+        console.log('🔄 Routing to ApplicationStatus component')
         if (userRole === 'beneficiary') {
-          return <BeneficiaryDashboard user={user} />
+          return <ApplicationStatus user={user} />
         }
         return <div className="access-denied">Access Denied - Beneficiaries only</div>
         
       case 'support':
+        console.log('🔄 Routing to SupportPrograms component')
         if (userRole === 'beneficiary') {
-          return <BeneficiaryDashboard user={user} />
+          return <SupportPrograms user={user} />
         }
         return <div className="access-denied">Access Denied - Beneficiaries only</div>
         

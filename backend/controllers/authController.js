@@ -2,6 +2,9 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import User from '../models/User.js';
 
+// Fallback JWT secret for development
+const JWT_SECRET = process.env.JWT_SECRET || 'heva-cultural-inclusion-dev-secret-key-2024';
+
 // Register new user with role restrictions
 export const register = async (req, res) => {
   try {
@@ -74,7 +77,7 @@ export const register = async (req, res) => {
     // Generate JWT token
     const token = jwt.sign(
       { userId: user._id, role: user.role },
-      process.env.JWT_SECRET,
+      JWT_SECRET,
       { expiresIn: '24h' }
     );
 
@@ -127,7 +130,7 @@ export const login = async (req, res) => {
     // Generate JWT token
     const token = jwt.sign(
       { userId: user._id, role: user.role },
-      process.env.JWT_SECRET,
+      JWT_SECRET,
       { expiresIn: '24h' }
     );
 
@@ -364,6 +367,75 @@ export const getVerificationRecommendations = async (req, res) => {
     res.json(recommendations);
   } catch (error) {
     console.error('Get verification recommendations error:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+
+// Update beneficiary data
+export const updateBeneficiaryData = async (req, res) => {
+  try {
+    const { 
+      personalInfo, 
+      contactInfo, 
+      financialInfo, 
+      programPreferences,
+      additionalDocuments 
+    } = req.body;
+
+    // Only beneficiaries can update their own data
+    if (req.user.role !== 'beneficiary') {
+      return res.status(403).json({ message: 'Access denied - Beneficiaries only' });
+    }
+
+    const user = await User.findById(req.user.id);
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    // Update personal information
+    if (personalInfo) {
+      user.personalInfo = { ...user.personalInfo, ...personalInfo };
+    }
+
+    // Update contact information
+    if (contactInfo) {
+      user.contactInfo = { ...user.contactInfo, ...contactInfo };
+    }
+
+    // Update financial information
+    if (financialInfo) {
+      user.financialInfo = { ...user.financialInfo, ...financialInfo };
+    }
+
+    // Update program preferences
+    if (programPreferences) {
+      user.programPreferences = { ...user.programPreferences, ...programPreferences };
+    }
+
+    // Update additional documents
+    if (additionalDocuments) {
+      user.additionalDocuments = { ...user.additionalDocuments, ...additionalDocuments };
+    }
+
+    // Update last modified timestamp
+    user.lastModified = new Date();
+
+    await user.save();
+
+    res.json({
+      message: 'Beneficiary data updated successfully',
+      user: {
+        id: user._id,
+        name: user.name,
+        personalInfo: user.personalInfo,
+        contactInfo: user.contactInfo,
+        financialInfo: user.financialInfo,
+        programPreferences: user.programPreferences,
+        lastModified: user.lastModified
+      }
+    });
+  } catch (error) {
+    console.error('Update beneficiary data error:', error);
     res.status(500).json({ message: 'Server error' });
   }
 };

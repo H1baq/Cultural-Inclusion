@@ -8,7 +8,8 @@ import {
   submitAppeal,
   getAppeals,
   updateVerificationData,
-  getVerificationRecommendations
+  getVerificationRecommendations,
+  updateBeneficiaryData
 } from '../controllers/authController.js';
 import { auth } from '../middleware/auth.js';
 
@@ -30,5 +31,6 @@ router.get('/verification-recommendations', auth, getVerificationRecommendations
 // User routes
 router.post('/submit-appeal', auth, submitAppeal);
 router.put('/verification-data/:userId', auth, updateVerificationData);
+router.put('/update-beneficiary-data', auth, updateBeneficiaryData);
 
 export default router;

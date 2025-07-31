@@ -6,6 +6,9 @@
   background: white;
   border-bottom: 1px solid #e9ecef;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  height: 80px; /* Fixed height */
+  position: relative;
+  z-index: 1000; /* Ensure navbar is above sidebar */
 }
 
 .navbar-brand {
