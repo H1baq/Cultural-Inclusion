@@ -367,3 +367,68 @@ export const getVerificationRecommendations = async (req, res) => {
     res.status(500).json({ message: 'Server error' });
   }
 };
+
+// Update beneficiary data (for beneficiaries to update their own information)
+export const updateBeneficiaryData = async (req, res) => {
+  try {
+    const userId = req.user.userId;
+    const { 
+      name, 
+      phoneNumber, 
+      location, 
+      vulnerabilityFactors,
+      references,
+      idDocument 
+    } = req.body;
+
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    // Only beneficiaries can update their own data
+    if (user.role !== 'beneficiary') {
+      return res.status(403).json({ message: 'Only beneficiaries can update beneficiary data' });
+    }
+
+    // Update allowed fields
+    if (name) user.name = name;
+    if (phoneNumber) user.phoneNumber = phoneNumber;
+    if (location) user.location = location;
+    if (vulnerabilityFactors) user.vulnerabilityFactors = vulnerabilityFactors;
+
+    // Update verification data if provided
+    if (references || idDocument) {
+      user.verificationData = {
+        ...user.verificationData,
+        ...(references && { references }),
+        ...(idDocument && { idDocument })
+      };
+    }
+
+    // Recalculate trust score after updates
+    user.trustScore = user.calculateTrustScore();
+    user.updateRiskLevel();
+
+    await user.save();
+
+    res.json({
+      message: 'Beneficiary data updated successfully',
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+        phoneNumber: user.phoneNumber,
+        location: user.location,
+        vulnerabilityFactors: user.vulnerabilityFactors,
+        trustScore: user.trustScore,
+        riskLevel: user.riskLevel,
+        verificationData: user.verificationData
+      }
+    });
+  } catch (error) {
+    console.error('Update beneficiary data error:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+};

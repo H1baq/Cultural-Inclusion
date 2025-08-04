@@ -1,7 +1,10 @@
 import React from 'react'
+import { useTheme } from '../contexts/ThemeContext'
 import './Sidebar.css'
 
 const Sidebar = ({ currentPage, setCurrentPage, user }) => {
+  const { isSidebarOpen } = useTheme()
+
   const getNavigationItems = () => {
     if (!user) return []
 
@@ -56,56 +59,68 @@ const Sidebar = ({ currentPage, setCurrentPage, user }) => {
   const navigationItems = getNavigationItems()
 
   return (
-    <div className="sidebar">
+    <div className={`sidebar ${!isSidebarOpen ? 'collapsed' : ''}`}>
       <div className="sidebar-header">
-        <div className="user-info">
-          <div className="user-avatar">
-            <span className="user-icon">{getRoleIcon(user?.role)}</span>
+        <div className="sidebar-logo">
+          <div className="sidebar-logo-icon">
+            HEVA
           </div>
-          <div className="user-details">
-            <h3>{user?.name || 'User'}</h3>
-            <span className={`role-badge ${getRoleColor(user?.role)}`}>
+        </div>
+      </div>
+
+      <div className="sidebar-user">
+        <div className="sidebar-user-info">
+          <div className="sidebar-user-avatar">
+            {getRoleIcon(user?.role)}
+          </div>
+          <div className="sidebar-user-details">
+            <div className="sidebar-user-name">
+              {user?.name || 'User'}
+            </div>
+            <div className="sidebar-user-role">
               {user?.role?.charAt(0).toUpperCase() + user?.role?.slice(1) || 'User'}
-            </span>
+            </div>
           </div>
         </div>
       </div>
 
-      <nav className="nav-section">
-        <h4>Navigation</h4>
-        <ul className="nav-list">
+      <nav className="sidebar-nav">
+        <div className="sidebar-nav-section">
+          <div className="sidebar-nav-title">Navigation</div>
           {navigationItems.map(item => (
-            <li key={item.id} className="nav-item">
-              <button
-                className={`nav-button ${currentPage === item.id ? 'active' : ''}`}
-                onClick={() => setCurrentPage(item.id)}
-              >
-                <span className="nav-icon">{item.icon}</span>
-                <span className="nav-label">{item.label}</span>
-              </button>
-            </li>
+            <button
+              key={item.id}
+              className={`sidebar-nav-item ${currentPage === item.id ? 'active' : ''}`}
+              onClick={() => setCurrentPage(item.id)}
+              aria-label={item.label}
+            >
+              <div className="sidebar-nav-icon">
+                {item.icon}
+              </div>
+              <span className="sidebar-nav-text">{item.label}</span>
+            </button>
           ))}
-        </ul>
-      </nav>
+        </div>
 
-      <div className="sidebar-footer">
-        <div className="role-info">
-          <div className="role-icon">{getRoleIcon(user?.role)}</div>
-          <div className="role-text">
-            <p>Role Information</p>
-            <strong>You are logged in as a {user?.role?.charAt(0).toUpperCase() + user?.role?.slice(1)}</strong>
-            {user?.role === 'admin' && (
-              <div className="role-description">Full system access and management capabilities</div>
-            )}
-            {user?.role === 'officer' && (
-              <div className="role-description">Data entry and beneficiary management</div>
-            )}
-            {user?.role === 'beneficiary' && (
-              <div className="role-description">Profile management and support access</div>
-            )}
+        <div className="sidebar-nav-section">
+          <div className="sidebar-nav-title">Role Information</div>
+          <div className="role-info">
+            <div className="role-icon">{getRoleIcon(user?.role)}</div>
+            <div className="role-text">
+              <p>You are logged in as a {user?.role?.charAt(0).toUpperCase() + user?.role?.slice(1)}</p>
+              {user?.role === 'admin' && (
+                <div className="role-description">Full system access and management capabilities</div>
+              )}
+              {user?.role === 'officer' && (
+                <div className="role-description">Data entry and beneficiary management</div>
+              )}
+              {user?.role === 'beneficiary' && (
+                <div className="role-description">Profile management and support access</div>
+              )}
+            </div>
           </div>
         </div>
-      </div>
+      </nav>
     </div>
   )
 }
