@@ -2,9 +2,6 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import User from '../models/User.js';
 
-// Fallback JWT secret for development
-const JWT_SECRET = process.env.JWT_SECRET || 'heva-cultural-inclusion-dev-secret-key-2024';
-
 // Register new user with role restrictions
 export const register = async (req, res) => {
   try {
@@ -77,7 +74,7 @@ export const register = async (req, res) => {
     // Generate JWT token
     const token = jwt.sign(
       { userId: user._id, role: user.role },
-      JWT_SECRET,
+      process.env.JWT_SECRET,
       { expiresIn: '24h' }
     );
 
@@ -130,7 +127,7 @@ export const login = async (req, res) => {
     // Generate JWT token
     const token = jwt.sign(
       { userId: user._id, role: user.role },
-      JWT_SECRET,
+      process.env.JWT_SECRET,
       { expiresIn: '24h' }
     );
 
@@ -371,54 +368,47 @@ export const getVerificationRecommendations = async (req, res) => {
   }
 };
 
-// Update beneficiary data
+// Update beneficiary data (for beneficiaries to update their own information)
 export const updateBeneficiaryData = async (req, res) => {
   try {
+    const userId = req.user.userId;
     const { 
-      personalInfo, 
-      contactInfo, 
-      financialInfo, 
-      programPreferences,
-      additionalDocuments 
+      name, 
+      phoneNumber, 
+      location, 
+      vulnerabilityFactors,
+      references,
+      idDocument 
     } = req.body;
 
-    // Only beneficiaries can update their own data
-    if (req.user.role !== 'beneficiary') {
-      return res.status(403).json({ message: 'Access denied - Beneficiaries only' });
-    }
-
-    const user = await User.findById(req.user.id);
+    const user = await User.findById(userId);
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
     }
 
-    // Update personal information
-    if (personalInfo) {
-      user.personalInfo = { ...user.personalInfo, ...personalInfo };
+    // Only beneficiaries can update their own data
+    if (user.role !== 'beneficiary') {
+      return res.status(403).json({ message: 'Only beneficiaries can update beneficiary data' });
     }
 
-    // Update contact information
-    if (contactInfo) {
-      user.contactInfo = { ...user.contactInfo, ...contactInfo };
+    // Update allowed fields
+    if (name) user.name = name;
+    if (phoneNumber) user.phoneNumber = phoneNumber;
+    if (location) user.location = location;
+    if (vulnerabilityFactors) user.vulnerabilityFactors = vulnerabilityFactors;
+
+    // Update verification data if provided
+    if (references || idDocument) {
+      user.verificationData = {
+        ...user.verificationData,
+        ...(references && { references }),
+        ...(idDocument && { idDocument })
+      };
     }
 
-    // Update financial information
-    if (financialInfo) {
-      user.financialInfo = { ...user.financialInfo, ...financialInfo };
-    }
-
-    // Update program preferences
-    if (programPreferences) {
-      user.programPreferences = { ...user.programPreferences, ...programPreferences };
-    }
-
-    // Update additional documents
-    if (additionalDocuments) {
-      user.additionalDocuments = { ...user.additionalDocuments, ...additionalDocuments };
-    }
-
-    // Update last modified timestamp
-    user.lastModified = new Date();
+    // Recalculate trust score after updates
+    user.trustScore = user.calculateTrustScore();
+    user.updateRiskLevel();
 
     await user.save();
 
@@ -427,11 +417,14 @@ export const updateBeneficiaryData = async (req, res) => {
       user: {
         id: user._id,
         name: user.name,
-        personalInfo: user.personalInfo,
-        contactInfo: user.contactInfo,
-        financialInfo: user.financialInfo,
-        programPreferences: user.programPreferences,
-        lastModified: user.lastModified
+        email: user.email,
+        role: user.role,
+        phoneNumber: user.phoneNumber,
+        location: user.location,
+        vulnerabilityFactors: user.vulnerabilityFactors,
+        trustScore: user.trustScore,
+        riskLevel: user.riskLevel,
+        verificationData: user.verificationData
       }
     });
   } catch (error) {

@@ -11,21 +11,26 @@ import Cohorts from './Pages/Cohorts'
 import Login from './Pages/Login'
 import Navbar from './Components/Navbar'
 import Sidebar from './Components/Sidebar'
+import { ToastContainer, useToast } from './Components/Toast'
+import { FullPageLoader } from './Components/LoadingSpinner'
+import { ThemeProvider, useTheme } from './contexts/ThemeContext'
 import './App.css'
 import ApplicationStatus from './Pages/ApplicationStatus'
 import SupportPrograms from './Pages/SupportPrograms'
 
-const App = () => {
+const AppContent = () => {
   const [currentPage, setCurrentPage] = useState('dashboard')
   const [isAuthenticated, setIsAuthenticated] = useState(false)
   const [user, setUser] = useState(null)
   const [token, setToken] = useState(null)
   const [isMobile, setIsMobile] = useState(false)
+  const [isLoading, setIsLoading] = useState(true)
+  const { toasts, removeToast, showSuccess, showError } = useToast()
+  const { isSidebarOpen } = useTheme()
 
   // Check for existing authentication and mobile device on app load
   useEffect(() => {
-    const savedToken = localStorage.getItem('token')
-    const savedUser = localStorage.getItem('user')
+    console.log('🚀 App initialization started...')
     
     // Check if device is mobile
     const checkMobile = () => {
@@ -37,42 +42,17 @@ const App = () => {
     checkMobile()
     window.addEventListener('resize', checkMobile)
     
-    if (savedToken && savedUser) {
-      try {
-        const userData = JSON.parse(savedUser)
-        
-        // Validate user role - only accept new role system
-        const validRoles = ['admin', 'officer', 'beneficiary']
-        if (!validRoles.includes(userData.role)) {
-          console.log('🔄 Invalid role detected, clearing cached data...')
-          localStorage.removeItem('token')
-          localStorage.removeItem('user')
-          return
-        }
-        
-        setToken(savedToken)
-        setUser(userData)
-        setIsAuthenticated(true)
-        
-        // Set appropriate default page based on role
-        if (userData.role === 'admin') {
-          setCurrentPage('admin-dashboard')
-        } else if (userData.role === 'beneficiary') {
-          setCurrentPage('profile')
-        } else {
-          setCurrentPage('dashboard')
-        }
-      } catch (error) {
-        console.error('❌ Error parsing cached user data:', error)
-        localStorage.removeItem('token')
-        localStorage.removeItem('user')
-      }
-    }
+    // Simple loading timer
+    const loadingTimer = setTimeout(() => {
+      console.log('⏰ Loading timer completed, setting isLoading to false')
+      setIsLoading(false)
+    }, 1000)
     
     return () => {
       window.removeEventListener('resize', checkMobile)
+      clearTimeout(loadingTimer)
     }
-  }, [])
+  }, []) // Remove dependencies to prevent re-runs
 
   const handleLogin = (userData, userToken) => {
     setUser(userData)
@@ -87,6 +67,8 @@ const App = () => {
     } else {
       setCurrentPage('dashboard')
     }
+    
+    showSuccess(`Welcome to InclusiTrack, ${userData.name}!`)
   }
 
   const handleLogout = () => {
@@ -96,6 +78,7 @@ const App = () => {
     setToken(null)
     setIsAuthenticated(false)
     setCurrentPage('dashboard')
+    showSuccess('Successfully logged out. See you soon!')
   }
 
   const renderPage = () => {
@@ -187,31 +170,67 @@ const App = () => {
     }
   }
 
+  // Show loading screen
+  if (isLoading) {
+    console.log('🔄 App is loading...')
+    return <FullPageLoader text="Initializing InclusiTrack..." />
+  }
+
+  console.log('🔍 App state:', { isAuthenticated, user, currentPage, isMobile })
+
   // Show login page if not authenticated
   if (!isAuthenticated) {
-    return <Login onLogin={handleLogin} />
+    console.log('🔐 User not authenticated, showing login page')
+    return (
+      <>
+        <Login onLogin={handleLogin} />
+        <ToastContainer toasts={toasts} removeToast={removeToast} />
+      </>
+    )
   }
 
   // For mobile devices, render mobile dashboard without sidebar/navbar
   if (isMobile) {
-    return <MobileDashboard user={user} />
+    console.log('📱 Mobile device detected, showing mobile dashboard')
+    return (
+      <>
+        <MobileDashboard user={user} />
+        <ToastContainer toasts={toasts} removeToast={removeToast} />
+      </>
+    )
   }
 
+  console.log('🖥️ Desktop layout, rendering main dashboard')
   // Desktop layout with sidebar and navbar
   return (
-    <div className='app-container'>
-      <Navbar user={user} onLogout={handleLogout} />
-      <div className='layout'>
-        <Sidebar 
-          currentPage={currentPage} 
-          setCurrentPage={setCurrentPage} 
-          user={user} 
-        />
-        <main className='main-content'>
-          {renderPage()}
-        </main>
+    <>
+      <div className='app-container'>
+        <div className='layout'>
+          <Sidebar 
+            currentPage={currentPage} 
+            setCurrentPage={setCurrentPage} 
+            user={user} 
+          />
+          <div className={`main-layout ${!isSidebarOpen ? 'expanded' : ''}`}>
+            <Navbar user={user} onLogout={handleLogout} />
+            <main className='main-content'>
+              <div className='content-area'>
+                {renderPage()}
+              </div>
+            </main>
+          </div>
+        </div>
       </div>
-    </div>
+      <ToastContainer toasts={toasts} removeToast={removeToast} />
+    </>
+  )
+}
+
+const App = () => {
+  return (
+    <ThemeProvider>
+      <AppContent />
+    </ThemeProvider>
   )
 }
 
