@@ -11,6 +11,12 @@ import integrationRoutes from './routes/integrationRoutes.js';
 
 dotenv.config();
 
+// Debug: Check if environment variables are loaded
+console.log('🔧 Environment Variables Debug:');
+console.log('JWT_SECRET:', process.env.JWT_SECRET ? 'SET' : 'NOT SET');
+console.log('PORT:', process.env.PORT);
+console.log('NODE_ENV:', process.env.NODE_ENV);
+
 const app = express();
 
 // Connect to MongoDB

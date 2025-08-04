@@ -1,0 +1,282 @@
+/* ===== CARD COMPONENT ===== */
+.card {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-primary);
+  border-radius: var(--radius-xl);
+  transition: all var(--transition-base);
+  position: relative;
+  overflow: hidden;
+}
+
+/* ===== CARD VARIANTS ===== */
+.card--default {
+  background: var(--bg-secondary);
+  border-color: var(--border-primary);
+}
+
+.card--elevated {
+  background: var(--bg-secondary);
+  border-color: var(--border-primary);
+  box-shadow: var(--shadow-md);
+}
+
+.card--outlined {
+  background: transparent;
+  border-color: var(--border-primary);
+}
+
+.card--filled {
+  background: var(--bg-tertiary);
+  border-color: var(--border-secondary);
+}
+
+.card--primary {
+  background: var(--primary-50);
+  border-color: var(--primary-200);
+}
+
+.card--success {
+  background: var(--success-50);
+  border-color: var(--success-200);
+}
+
+.card--warning {
+  background: var(--warning-50);
+  border-color: var(--warning-200);
+}
+
+.card--error {
+  background: var(--error-50);
+  border-color: var(--error-200);
+}
+
+/* ===== CARD PADDING VARIANTS ===== */
+.card--padding-none {
+  padding: 0;
+}
+
+.card--padding-sm {
+  padding: var(--space-3);
+}
+
+.card--padding-default {
+  padding: var(--space-6);
+}
+
+.card--padding-lg {
+  padding: var(--space-8);
+}
+
+.card--padding-xl {
+  padding: var(--space-10);
+}
+
+/* ===== CARD HOVER EFFECTS ===== */
+.card--hover:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+  border-color: var(--border-accent);
+}
+
+.card--hover.card--elevated:hover {
+  box-shadow: var(--shadow-xl);
+}
+
+.card--hover.card--outlined:hover {
+  background: var(--bg-secondary);
+}
+
+.card--hover.card--filled:hover {
+  background: var(--bg-secondary);
+}
+
+.card--hover.card--primary:hover {
+  background: var(--primary-100);
+  border-color: var(--primary-300);
+}
+
+.card--hover.card--success:hover {
+  background: var(--success-100);
+  border-color: var(--success-300);
+}
+
+.card--hover.card--warning:hover {
+  background: var(--warning-100);
+  border-color: var(--warning-300);
+}
+
+.card--hover.card--error:hover {
+  background: var(--error-100);
+  border-color: var(--error-300);
+}
+
+/* ===== CARD WITH ACCENT BORDER ===== */
+.card--accent::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--primary-500), var(--primary-600));
+  border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+}
+
+.card--accent.card--success::before {
+  background: linear-gradient(90deg, var(--success-500), var(--success-600));
+}
+
+.card--accent.card--warning::before {
+  background: linear-gradient(90deg, var(--warning-500), var(--warning-600));
+}
+
+.card--accent.card--error::before {
+  background: linear-gradient(90deg, var(--error-500), var(--error-600));
+}
+
+/* ===== CARD WITH ICON ===== */
+.card--with-icon {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-4);
+}
+
+.card--with-icon .card-icon {
+  width: 48px;
+  height: 48px;
+  background: var(--primary-100);
+  border-radius: var(--radius-lg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--font-size-xl);
+  flex-shrink: 0;
+}
+
+.card--with-icon .card-content {
+  flex: 1;
+  min-width: 0;
+}
+
+/* ===== CARD HEADER ===== */
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: var(--space-4);
+  gap: var(--space-4);
+}
+
+.card-title {
+  font-size: var(--font-size-lg);
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0;
+  line-height: 1.3;
+}
+
+.card-subtitle {
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+  margin: var(--space-1) 0 0 0;
+  line-height: 1.4;
+}
+
+.card-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  flex-shrink: 0;
+}
+
+/* ===== CARD CONTENT ===== */
+.card-content {
+  color: var(--text-primary);
+}
+
+.card-content > *:last-child {
+  margin-bottom: 0;
+}
+
+/* ===== CARD FOOTER ===== */
+.card-footer {
+  margin-top: var(--space-4);
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--border-primary);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+/* ===== RESPONSIVE DESIGN ===== */
+@media (max-width: 768px) {
+  .card--padding-default {
+    padding: var(--space-4);
+  }
+  
+  .card--padding-lg {
+    padding: var(--space-6);
+  }
+  
+  .card--padding-xl {
+    padding: var(--space-8);
+  }
+  
+  .card--with-icon {
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .card--with-icon .card-icon {
+    align-self: center;
+  }
+  
+  .card-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-2);
+  }
+  
+  .card-footer {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-2);
+  }
+}
+
+@media (max-width: 480px) {
+  .card--padding-default {
+    padding: var(--space-3);
+  }
+  
+  .card--padding-lg {
+    padding: var(--space-4);
+  }
+  
+  .card--padding-xl {
+    padding: var(--space-6);
+  }
+}
+
+/* ===== ACCESSIBILITY ===== */
+@media (prefers-reduced-motion: reduce) {
+  .card {
+    transition: none;
+  }
+  
+  .card--hover:hover {
+    transform: none;
+  }
+}
+
+/* ===== HIGH CONTRAST MODE ===== */
+@media (prefers-contrast: high) {
+  .card {
+    border: 2px solid var(--border-primary);
+  }
+  
+  .card--accent::before {
+    height: 6px;
+  }
+} 

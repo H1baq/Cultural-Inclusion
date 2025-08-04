@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import Card from '../Components/Card'
 import './BeneficiaryDashboard.css'
 
 const BeneficiaryDashboard = ({ user }) => {
@@ -88,10 +89,10 @@ const BeneficiaryDashboard = ({ user }) => {
 
   const getStatusColor = (status) => {
     switch (status) {
-      case 'approved': return 'approved'
-      case 'rejected': return 'rejected'
-      case 'pending': return 'pending'
-      case 'under_review': return 'review'
+      case 'approved': return 'success'
+      case 'rejected': return 'error'
+      case 'pending': return 'warning'
+      case 'under_review': return 'warning'
       default: return 'default'
     }
   }
@@ -108,18 +109,18 @@ const BeneficiaryDashboard = ({ user }) => {
 
   const getAppealStatusColor = (status) => {
     switch (status) {
-      case 'approved': return 'approved'
-      case 'rejected': return 'rejected'
-      case 'pending': return 'pending'
+      case 'approved': return 'success'
+      case 'rejected': return 'error'
+      case 'pending': return 'warning'
       default: return 'default'
     }
   }
 
   if (isLoading) {
     return (
-      <div className="beneficiary-dashboard-container">
-        <div className="loading-state">
-          <div className="spinner"></div>
+      <div className="beneficiary-dashboard">
+        <div className="loading-container">
+          <div className="loading-spinner"></div>
           <p>Loading your profile...</p>
         </div>
       </div>
@@ -127,21 +128,44 @@ const BeneficiaryDashboard = ({ user }) => {
   }
 
   return (
-    <div className="beneficiary-dashboard-container">
+    <div className="beneficiary-dashboard">
+      {/* Beneficiary Header */}
       <div className="beneficiary-header">
-        <h1>👤 MY PROFILE PAGE</h1>
-        <p className="beneficiary-subtitle">
-          Manage your profile and track your application status
-        </p>
+        <div className="beneficiary-header-content">
+          <div className="beneficiary-title-section">
+            <h1 className="beneficiary-title">👤 My Profile</h1>
+            <p className="beneficiary-subtitle">
+              Manage your profile and track your application status
+            </p>
+          </div>
+          <div className="beneficiary-meta">
+            <div className="beneficiary-id">
+              <span className="id-label">Beneficiary ID:</span>
+              <span className="id-value">{userProfile?._id || user?._id || 'Not assigned'}</span>
+            </div>
+          </div>
+        </div>
       </div>
+
+      {/* Error Message */}
+      {error && (
+        <Card variant="error" className="error-card">
+          <div className="error-content">
+            <span className="error-icon">⚠️</span>
+            <span className="error-text">{error}</span>
+          </div>
+        </Card>
+      )}
 
       <div className="profile-grid">
         {/* Profile Information */}
-        <div className="profile-card">
+        <Card variant="default" className="profile-card">
           <div className="card-header">
-            <h2>📋 Personal Information</h2>
+            <h2 className="card-title">📋 Personal Information</h2>
+            <p className="card-subtitle">Your basic profile details</p>
           </div>
-          <div className="profile-info">
+          
+          <div className="profile-content">
             {/* Profile Photo Section */}
             <div className="profile-photo-section">
               <div className="profile-photo">
@@ -154,7 +178,7 @@ const BeneficiaryDashboard = ({ user }) => {
                 )}
               </div>
               <div className="photo-upload">
-                <label htmlFor="photo-upload" className="upload-btn">
+                <label htmlFor="photo-upload" className="upload-button">
                   📷 Upload Photo
                 </label>
                 <input
@@ -167,117 +191,200 @@ const BeneficiaryDashboard = ({ user }) => {
               </div>
             </div>
 
-            <div className="info-item">
-              <span className="info-label">Name:</span>
-              <span className="info-value">{userProfile?.name || user?.name || 'Not provided'}</span>
-            </div>
-            <div className="info-item">
-              <span className="info-label">Email:</span>
-              <span className="info-value">{userProfile?.email || user?.email}</span>
-            </div>
-            <div className="info-item">
-              <span className="info-label">Phone:</span>
-              <span className="info-value">{userProfile?.phoneNumber || user?.phoneNumber || 'Not provided'}</span>
-            </div>
-            <div className="info-item">
-              <span className="info-label">Location:</span>
-              <span className="info-value">{userProfile?.location || user?.location || 'Not provided'}</span>
-            </div>
-            <div className="info-item">
-              <span className="info-label">Beneficiary ID:</span>
-              <span className="info-value">{userProfile?._id || user?._id || 'Not assigned'}</span>
-            </div>
-            <div className="info-item">
-              <span className="info-label">Account Status:</span>
-              <span className={`status-badge ${userProfile?.approvalStatus || user?.approvalStatus || 'pending'}`}>
-                {userProfile?.approvalStatus || user?.approvalStatus || 'pending'}
-              </span>
+            <div className="profile-info">
+              <div className="info-item">
+                <span className="info-label">Name:</span>
+                <span className="info-value">{userProfile?.name || user?.name || 'Not provided'}</span>
+              </div>
+              <div className="info-item">
+                <span className="info-label">Email:</span>
+                <span className="info-value">{userProfile?.email || user?.email}</span>
+              </div>
+              <div className="info-item">
+                <span className="info-label">Phone:</span>
+                <span className="info-value">{userProfile?.phoneNumber || user?.phoneNumber || 'Not provided'}</span>
+              </div>
+              <div className="info-item">
+                <span className="info-label">Location:</span>
+                <span className="info-value">{userProfile?.location || user?.location || 'Not provided'}</span>
+              </div>
+              <div className="info-item">
+                <span className="info-label">Account Status:</span>
+                <span className={`status-badge ${getStatusColor(userProfile?.approvalStatus || user?.approvalStatus || 'pending')}`}>
+                  {getStatusIcon(userProfile?.approvalStatus || user?.approvalStatus || 'pending')}
+                  {userProfile?.approvalStatus || user?.approvalStatus || 'pending'}
+                </span>
+              </div>
             </div>
           </div>
-        </div>
+        </Card>
 
         {/* Account Status */}
-        <div className="status-card">
+        <Card variant="primary" className="status-card">
           <div className="card-header">
-            <h2>📊 Account Status</h2>
+            <h2 className="card-title">📊 Account Status</h2>
+            <p className="card-subtitle">Your application and verification status</p>
           </div>
-          <div className="status-info">
+          
+          <div className="status-content">
             <div className="status-item">
-              <span className="status-label">Registration Status:</span>
-              <span className={`status-value ${getStatusColor(userProfile?.approvalStatus || user?.approvalStatus || 'pending')}`}>
-                <span className="status-icon">{getStatusIcon(userProfile?.approvalStatus || user?.approvalStatus || 'pending')}</span>
-                {userProfile?.approvalStatus || user?.approvalStatus || 'pending'}
-              </span>
+              <div className="status-icon">
+                {getStatusIcon(userProfile?.approvalStatus || user?.approvalStatus || 'pending')}
+              </div>
+              <div className="status-info">
+                <h3 className="status-title">Application Status</h3>
+                <span className={`status-value ${getStatusColor(userProfile?.approvalStatus || user?.approvalStatus || 'pending')}`}>
+                  {userProfile?.approvalStatus || user?.approvalStatus || 'pending'}
+                </span>
+              </div>
             </div>
-            
-            {userProfile?.approvalStatus === 'rejected' && (
+
+            <div className="status-item">
+              <div className="status-icon">🎯</div>
+              <div className="status-info">
+                <h3 className="status-title">Trust Score</h3>
+                <span className="status-value">
+                  {userProfile?.trustScore || user?.trustScore || 0}%
+                </span>
+              </div>
+            </div>
+
+            <div className="status-item">
+              <div className="status-icon">⚠️</div>
+              <div className="status-info">
+                <h3 className="status-title">Risk Level</h3>
+                <span className={`status-value ${getStatusColor(userProfile?.riskLevel || user?.riskLevel || 'medium')}`}>
+                  {userProfile?.riskLevel || user?.riskLevel || 'medium'}
+                </span>
+              </div>
+            </div>
+
+            {userProfile?.approvalStatus === 'rejected' || user?.approvalStatus === 'rejected' ? (
               <div className="rejection-info">
-                <span className="rejection-label">Reason for Rejection:</span>
-                <span className="rejection-reason">{userProfile?.rejectionReason || 'No reason provided'}</span>
-                
-                {!userProfile?.hasAppealed && (
+                <h3 className="rejection-title">Rejection Reason</h3>
+                <p className="rejection-reason">
+                  {userProfile?.rejectionReason || user?.rejectionReason || 'No reason provided'}
+                </p>
+                {!showAppealForm ? (
                   <button 
-                    className="appeal-btn"
+                    className="appeal-button"
                     onClick={() => setShowAppealForm(true)}
                   >
                     📝 Submit Appeal
                   </button>
-                )}
-                
-                {userProfile?.hasAppealed && (
-                  <div className="appeal-status">
-                    <span className="appeal-label">Appeal Status:</span>
-                    <span className={`appeal-value ${getAppealStatusColor(userProfile?.appealStatus)}`}>
-                      {userProfile?.appealStatus || 'Under Review'}
-                    </span>
+                ) : (
+                  <div className="appeal-form">
+                    <textarea
+                      value={appealComment}
+                      onChange={(e) => setAppealComment(e.target.value)}
+                      placeholder="Explain why you believe your application should be reconsidered..."
+                      className="appeal-textarea"
+                      rows="4"
+                    />
+                    <div className="appeal-actions">
+                      <button 
+                        className="submit-appeal-button"
+                        onClick={handleSubmitAppeal}
+                      >
+                        📤 Submit Appeal
+                      </button>
+                      <button 
+                        className="cancel-appeal-button"
+                        onClick={() => setShowAppealForm(false)}
+                      >
+                        ❌ Cancel
+                      </button>
+                    </div>
                   </div>
                 )}
               </div>
-            )}
+            ) : null}
           </div>
-        </div>
-      </div>
+        </Card>
 
-      {/* Appeal Form Modal */}
-      {showAppealForm && (
-        <div className="modal-overlay">
-          <div className="modal-content">
-            <div className="modal-header">
-              <h3>📝 Submit Appeal</h3>
-              <button 
-                className="close-btn"
-                onClick={() => setShowAppealForm(false)}
-              >
-                ✕
-              </button>
+        {/* Support Programs */}
+        <Card variant="success" className="support-card">
+          <div className="card-header">
+            <h2 className="card-title">🤝 Support Programs</h2>
+            <p className="card-subtitle">Available programs and resources</p>
+          </div>
+          
+          <div className="support-content">
+            <div className="support-item">
+              <div className="support-icon">🎨</div>
+              <div className="support-info">
+                <h3 className="support-title">Creative Arts Support</h3>
+                <p className="support-description">Funding and resources for creative projects</p>
+                <span className="support-status available">Available</span>
+              </div>
             </div>
-            <div className="modal-body">
-              <p>Please provide additional information or clarification for your appeal:</p>
-              <textarea
-                value={appealComment}
-                onChange={(e) => setAppealComment(e.target.value)}
-                placeholder="Explain why you believe your application should be reconsidered..."
-                rows="6"
-              />
+
+            <div className="support-item">
+              <div className="support-icon">💼</div>
+              <div className="support-info">
+                <h3 className="support-title">Career Development</h3>
+                <p className="support-description">Training and job placement assistance</p>
+                <span className="support-status available">Available</span>
+              </div>
             </div>
-            <div className="modal-actions">
-              <button 
-                className="cancel-btn"
-                onClick={() => setShowAppealForm(false)}
-              >
-                Cancel
-              </button>
-              <button 
-                className="submit-btn"
-                onClick={handleSubmitAppeal}
-                disabled={!appealComment.trim()}
-              >
-                Submit Appeal
-              </button>
+
+            <div className="support-item">
+              <div className="support-icon">🏥</div>
+              <div className="support-info">
+                <h3 className="support-title">Healthcare Access</h3>
+                <p className="support-description">Medical and mental health support</p>
+                <span className="support-status available">Available</span>
+              </div>
+            </div>
+
+            <div className="support-item">
+              <div className="support-icon">🏠</div>
+              <div className="support-info">
+                <h3 className="support-title">Housing Support</h3>
+                <p className="support-description">Housing assistance and resources</p>
+                <span className="support-status pending">Pending Approval</span>
+              </div>
             </div>
           </div>
-        </div>
-      )}
+        </Card>
+
+        {/* Recent Activity */}
+        <Card variant="default" className="activity-card">
+          <div className="card-header">
+            <h2 className="card-title">📈 Recent Activity</h2>
+            <p className="card-subtitle">Your latest interactions and updates</p>
+          </div>
+          
+          <div className="activity-content">
+            <div className="activity-item">
+              <div className="activity-icon">📋</div>
+              <div className="activity-info">
+                <h3 className="activity-title">Profile Updated</h3>
+                <p className="activity-description">Your profile information was updated</p>
+                <span className="activity-time">2 hours ago</span>
+              </div>
+            </div>
+
+            <div className="activity-item">
+              <div className="activity-icon">✅</div>
+              <div className="activity-info">
+                <h3 className="activity-title">Application Submitted</h3>
+                <p className="activity-description">Your application was successfully submitted</p>
+                <span className="activity-time">1 day ago</span>
+              </div>
+            </div>
+
+            <div className="activity-item">
+              <div className="activity-icon">📧</div>
+              <div className="activity-info">
+                <h3 className="activity-title">Email Verification</h3>
+                <p className="activity-description">Your email address was verified</p>
+                <span className="activity-time">3 days ago</span>
+              </div>
+            </div>
+          </div>
+        </Card>
+      </div>
     </div>
   )
 }

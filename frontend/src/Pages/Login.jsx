@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import './Login.css'
 
 const Login = ({ onLogin }) => {
+  const [showAuthModal, setShowAuthModal] = useState(false)
   const [isLogin, setIsLogin] = useState(true)
   const [formData, setFormData] = useState({
     name: '',
@@ -102,31 +103,225 @@ const Login = ({ onLogin }) => {
   }
 
   return (
-    <div className="login-container">
-      <div className="login-background">
+    <div className="landing-container">
+      {/* Background */}
+      <div className="landing-background">
         <div className="background-pattern"></div>
         <div className="floating-elements">
           <div className="floating-icon">🌍</div>
           <div className="floating-icon">🤝</div>
           <div className="floating-icon">💡</div>
           <div className="floating-icon">📊</div>
+          <div className="floating-icon">🎨</div>
+          <div className="floating-icon">🏘️</div>
         </div>
       </div>
 
-      <div className="login-content">
-        <div className="login-card">
-          <div className="login-header">
-            <div className="logo-section">
+      {/* Header Navigation */}
+      <header className="landing-header">
+        <div className="header-content">
+          <div className="logo">
               <div className="logo-icon">🌍</div>
-              <div className="logo-text">
-                <h1>InclusiTrack</h1>
-                <p>HEVA Cultural Inclusion Data Management</p>
+            <span className="logo-text">InclusiTrack</span>
+          </div>
+          <div className="header-actions">
+            <button 
+              className="header-btn secondary"
+              onClick={() => {
+                setIsLogin(true)
+                setShowAuthModal(true)
+              }}
+            >
+              Sign In
+            </button>
+            <button 
+              className="header-btn primary"
+              onClick={() => {
+                setIsLogin(false)
+                setShowAuthModal(true)
+              }}
+            >
+              Join HEVA
+            </button>
+          </div>
+        </div>
+      </header>
+
+      {/* Hero Section */}
+      <section className="hero-section">
+        <div className="hero-content">
+          <div className="hero-text">
+            <h1 className="hero-title">
+              Transform Lives Through
+              <span className="highlight"> Data-Driven Inclusion</span>
+            </h1>
+            <p className="hero-subtitle">
+              Join HEVA's mission to empower vulnerable communities across Kenya. 
+              Whether you're a field officer working on the ground or a beneficiary seeking support, 
+              together we can create lasting change.
+            </p>
+            <div className="hero-actions">
+              <button 
+                className="cta-button primary"
+                onClick={() => {
+                  setIsLogin(false)
+                  setShowAuthModal(true)
+                }}
+              >
+                Start Your Journey
+              </button>
+              <button 
+                className="cta-button secondary"
+                onClick={() => {
+                  setIsLogin(true)
+                  setShowAuthModal(true)
+                }}
+              >
+                Access Your Account
+              </button>
+            </div>
+          </div>
+          <div className="hero-visual">
+            <div className="hero-stats">
+              <div className="stat-card">
+                <div className="stat-number">500+</div>
+                <div className="stat-label">Vulnerable Groups Supported</div>
+              </div>
+              <div className="stat-card">
+                <div className="stat-number">50+</div>
+                <div className="stat-label">Communities Reached</div>
+              </div>
+              <div className="stat-card">
+                <div className="stat-number">100%</div>
+                <div className="stat-label">Data Privacy Protected</div>
               </div>
             </div>
-            <div className="mission-statement">
-              <h2>Empowering Vulnerable Communities Through Data-Driven Inclusion</h2>
-              <p>Supporting refugees, LGBTQ+ persons, persons with disabilities, and creative communities with strategic insights and targeted interventions.</p>
+          </div>
+        </div>
+      </section>
+
+      {/* Features Section */}
+      <section className="features-section">
+        <div className="features-content">
+          <h2 className="section-title">Why Join HEVA?</h2>
+          <div className="features-grid">
+            <div className="feature-card">
+              <div className="feature-icon">📊</div>
+              <h3>Data-Driven Insights</h3>
+              <p>Access real-time analytics and insights to make informed decisions about community interventions.</p>
             </div>
+            <div className="feature-card">
+              <div className="feature-icon">🤝</div>
+              <h3>Community Connection</h3>
+              <p>Connect with other field officers and beneficiaries to share experiences and best practices.</p>
+            </div>
+            <div className="feature-card">
+              <div className="feature-icon">🎯</div>
+              <h3>Targeted Support</h3>
+              <p>Receive personalized support programs based on your specific needs and circumstances.</p>
+            </div>
+            <div className="feature-card">
+              <div className="feature-icon">🛡️</div>
+              <h3>Secure & Private</h3>
+              <p>Your data is protected with enterprise-grade security and privacy controls.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* For Whom Section */}
+      <section className="audience-section">
+        <div className="audience-content">
+          <h2 className="section-title">Who Should Join?</h2>
+          <div className="audience-grid">
+            <div className="audience-card">
+              <div className="audience-icon">👥</div>
+              <h3>Field Officers</h3>
+              <p>Register and track beneficiaries, collect data in the field, and generate reports for better community outreach.</p>
+              <ul className="audience-benefits">
+                <li>• Register beneficiaries efficiently</li>
+                <li>• Track community progress</li>
+                <li>• Generate detailed reports</li>
+                <li>• Access real-time data</li>
+              </ul>
+            </div>
+            <div className="audience-card">
+              <div className="audience-icon">💝</div>
+              <h3>Beneficiaries</h3>
+              <p>Access support programs, track your application status, and connect with resources tailored to your needs.</p>
+              <ul className="audience-benefits">
+                <li>• Apply for support programs</li>
+                <li>• Track application status</li>
+                <li>• Access community resources</li>
+                <li>• Connect with field officers</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* CTA Section */}
+      <section className="cta-section">
+        <div className="cta-content">
+          <h2>Ready to Make a Difference?</h2>
+          <p>Join thousands of others who are already transforming communities through HEVA's inclusive platform.</p>
+          <div className="cta-actions">
+            <button 
+              className="cta-button primary large"
+              onClick={() => {
+                setIsLogin(false)
+                setShowAuthModal(true)
+              }}
+            >
+              Get Started Today
+            </button>
+          </div>
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer className="landing-footer">
+        <div className="footer-content">
+          <div className="footer-section">
+            <div className="footer-logo">
+              <div className="logo-icon">🌍</div>
+              <span>InclusiTrack</span>
+            </div>
+            <p>Empowering vulnerable communities through data-driven inclusion.</p>
+          </div>
+          <div className="footer-section">
+            <h4>Quick Links</h4>
+            <ul>
+              <li><button onClick={() => setShowAuthModal(true)}>Sign In</button></li>
+              <li><button onClick={() => {
+                setIsLogin(false)
+                setShowAuthModal(true)
+              }}>Create Account</button></li>
+            </ul>
+          </div>
+          <div className="footer-section">
+            <h4>Contact</h4>
+            <p>Email: support@heva.org</p>
+            <p>Phone: +254 700 000 000</p>
+          </div>
+        </div>
+        <div className="footer-bottom">
+          <p>&copy; 2024 HEVA Cultural Inclusion. All rights reserved.</p>
+        </div>
+      </footer>
+
+      {/* Auth Modal */}
+      {showAuthModal && (
+        <div className="auth-modal-overlay" onClick={() => setShowAuthModal(false)}>
+          <div className="auth-modal" onClick={(e) => e.stopPropagation()}>
+            <div className="modal-header">
+              <h3>{isLogin ? 'Welcome Back' : 'Join HEVA'}</h3>
+              <button 
+                className="modal-close"
+                onClick={() => setShowAuthModal(false)}
+              >
+                ×
+              </button>
           </div>
 
           <div className="auth-tabs">
@@ -134,15 +329,13 @@ const Login = ({ onLogin }) => {
               className={`tab-button ${isLogin ? 'active' : ''}`}
               onClick={() => setIsLogin(true)}
             >
-              <span className="tab-icon">🔐</span>
-              <span className="tab-text">Sign In</span>
+                Sign In
             </button>
             <button 
               className={`tab-button ${!isLogin ? 'active' : ''}`}
               onClick={() => setIsLogin(false)}
             >
-              <span className="tab-icon">📝</span>
-              <span className="tab-text">Create Account</span>
+                Create Account
             </button>
           </div>
 
@@ -172,12 +365,6 @@ const Login = ({ onLogin }) => {
                     <option value="beneficiary">Beneficiary</option>
                     <option value="officer">Field Officer</option>
                   </select>
-                  <small className="form-help">
-                    {formData.role === 'officer' 
-                      ? 'Field Officers can register beneficiaries and track data in the field'
-                      : 'Beneficiaries can access support programs and track their status'
-                    }
-                  </small>
                 </div>
 
                 <div className="form-group">
@@ -280,46 +467,24 @@ const Login = ({ onLogin }) => {
               className="submit-button"
               disabled={isLoading}
             >
-              {isLoading ? (
-                <div className="loading-state">
-                  <div className="spinner"></div>
-                  <span>{isLogin ? 'Signing In...' : 'Creating Account...'}</span>
-                </div>
-              ) : (
                 <div className="button-content">
                   <span className="button-icon">{isLogin ? '🔐' : '📝'}</span>
                   <span className="button-text">{isLogin ? 'Sign In' : 'Create Account'}</span>
+                  {isLoading && (
+                    <div className="loading-indicator">
+                      <div className="loading-dots">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                      </div>
+                    </div>
+                  )}
                 </div>
-              )}
             </button>
           </form>
-
-          <div className="login-footer">
-            <div className="security-badge">
-              <div className="security-icon">🛡️</div>
-              <div className="security-text">
-                <h4>Enterprise Security</h4>
-                <p>JWT Authentication • Role-Based Access • Encrypted Data</p>
-              </div>
-            </div>
-            
-            <div className="impact-stats">
-              <div className="stat-item">
-                <span className="stat-number">500+</span>
-                <span className="stat-label">Vulnerable Groups</span>
-              </div>
-              <div className="stat-item">
-                <span className="stat-number">50+</span>
-                <span className="stat-label">Communities</span>
-              </div>
-              <div className="stat-item">
-                <span className="stat-number">100%</span>
-                <span className="stat-label">Data Privacy</span>
-              </div>
-            </div>
           </div>
         </div>
-      </div>
+      )}
     </div>
   )
 }

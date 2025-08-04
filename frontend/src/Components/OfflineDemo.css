@@ -1,0 +1,305 @@
+/* ===== OFFLINE DEMO STYLES ===== */
+.offline-demo {
+  margin-bottom: var(--space-8);
+}
+
+.demo-header {
+  margin-bottom: var(--space-6);
+}
+
+.demo-header h3 {
+  font-size: var(--font-size-xl);
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0 0 var(--space-2) 0;
+}
+
+.demo-header p {
+  font-size: var(--font-size-base);
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+.demo-message {
+  padding: var(--space-3);
+  border-radius: var(--radius-md);
+  margin-bottom: var(--space-6);
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+}
+
+.demo-message.success {
+  background: var(--success-50);
+  border: 1px solid var(--success-200);
+  color: var(--success-800);
+}
+
+.demo-message.error {
+  background: var(--error-50);
+  border: 1px solid var(--error-200);
+  color: var(--error-800);
+}
+
+.demo-section {
+  margin-bottom: var(--space-6);
+}
+
+.demo-section h4 {
+  font-size: var(--font-size-lg);
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0 0 var(--space-4) 0;
+}
+
+/* ===== QUICK ADD BUTTONS ===== */
+.quick-add-buttons {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: var(--space-3);
+}
+
+.quick-add-btn {
+  padding: var(--space-3) var(--space-4);
+  border: none;
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  min-height: 48px;
+}
+
+.quick-add-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.quick-add-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.quick-add-btn.beneficiary {
+  background: var(--primary-100);
+  color: var(--primary-700);
+  border: 1px solid var(--primary-200);
+}
+
+.quick-add-btn.beneficiary:hover:not(:disabled) {
+  background: var(--primary-200);
+  color: var(--primary-800);
+}
+
+.quick-add-btn.progress {
+  background: var(--success-100);
+  color: var(--success-700);
+  border: 1px solid var(--success-200);
+}
+
+.quick-add-btn.progress:hover:not(:disabled) {
+  background: var(--success-200);
+  color: var(--success-800);
+}
+
+.quick-add-btn.emergency {
+  background: var(--error-100);
+  color: var(--error-700);
+  border: 1px solid var(--error-200);
+}
+
+.quick-add-btn.emergency:hover:not(:disabled) {
+  background: var(--error-200);
+  color: var(--error-800);
+}
+
+.quick-add-btn.update {
+  background: var(--warning-100);
+  color: var(--warning-700);
+  border: 1px solid var(--warning-200);
+}
+
+.quick-add-btn.update:hover:not(:disabled) {
+  background: var(--warning-200);
+  color: var(--warning-800);
+}
+
+.quick-add-btn.report {
+  background: var(--gray-100);
+  color: var(--gray-700);
+  border: 1px solid var(--gray-200);
+}
+
+.quick-add-btn.report:hover:not(:disabled) {
+  background: var(--gray-200);
+  color: var(--gray-800);
+}
+
+/* ===== CUSTOM ENTRY FORM ===== */
+.custom-entry-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.form-row {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.form-row label {
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.form-row select,
+.form-row textarea {
+  padding: var(--space-3);
+  border: 1px solid var(--border-primary);
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-sm);
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  transition: border-color var(--transition-fast);
+}
+
+.form-row select:focus,
+.form-row textarea:focus {
+  outline: none;
+  border-color: var(--primary-500);
+  box-shadow: 0 0 0 3px var(--primary-100);
+}
+
+.form-row textarea {
+  resize: vertical;
+  min-height: 80px;
+  font-family: inherit;
+}
+
+.add-entry-btn {
+  background: var(--primary-500);
+  color: white;
+  border: none;
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  align-self: flex-start;
+}
+
+.add-entry-btn:hover:not(:disabled) {
+  background: var(--primary-600);
+  transform: translateY(-1px);
+}
+
+.add-entry-btn:disabled {
+  background: var(--gray-400);
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* ===== DEMO INFO ===== */
+.demo-info {
+  background: var(--bg-secondary);
+  padding: var(--space-4);
+  border-radius: var(--radius-lg);
+  border-left: 4px solid var(--primary-500);
+}
+
+.demo-info h4 {
+  font-size: var(--font-size-lg);
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0 0 var(--space-3) 0;
+}
+
+.demo-info ol {
+  margin: 0;
+  padding-left: var(--space-6);
+}
+
+.demo-info li {
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+  margin-bottom: var(--space-2);
+  line-height: 1.5;
+}
+
+.demo-info li:last-child {
+  margin-bottom: 0;
+}
+
+/* ===== RESPONSIVE DESIGN ===== */
+@media (max-width: 768px) {
+  .quick-add-buttons {
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: var(--space-2);
+  }
+
+  .quick-add-btn {
+    padding: var(--space-2) var(--space-3);
+    font-size: var(--font-size-xs);
+    min-height: 40px;
+  }
+
+  .form-row {
+    gap: var(--space-1);
+  }
+
+  .form-row select,
+  .form-row textarea {
+    padding: var(--space-2);
+  }
+
+  .add-entry-btn {
+    width: 100%;
+    align-self: stretch;
+  }
+}
+
+@media (max-width: 480px) {
+  .quick-add-buttons {
+    grid-template-columns: 1fr;
+  }
+
+  .demo-info {
+    padding: var(--space-3);
+  }
+
+  .demo-info ol {
+    padding-left: var(--space-4);
+  }
+}
+
+/* ===== ACCESSIBILITY ===== */
+@media (prefers-reduced-motion: reduce) {
+  .quick-add-btn:hover,
+  .add-entry-btn:hover {
+    transform: none;
+  }
+}
+
+/* ===== HIGH CONTRAST MODE ===== */
+@media (prefers-contrast: high) {
+  .quick-add-btn,
+  .form-row select,
+  .form-row textarea {
+    border: 2px solid var(--border-primary);
+  }
+
+  .add-entry-btn {
+    border: 2px solid var(--primary-600);
+  }
+} 
